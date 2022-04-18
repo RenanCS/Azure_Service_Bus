@@ -101,7 +101,7 @@ namespace SimpleBorkeredMessaging.ManagementConsole
 
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
