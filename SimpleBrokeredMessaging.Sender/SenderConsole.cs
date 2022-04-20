@@ -14,6 +14,7 @@ namespace SimpleBrokeredMessaging.Sender
         static string QueueNameObject = "demoobjectqueue";
         static string QueueNameControl = "demoControlqueue";
         static string QueueNameDuplicate = "demoDuplicatequeue";
+        static string QueueNameGrupoSession = "demoGroupSessionqueue";
         static string Sentence = "Microsoft Azure Service Bus.";
 
         static async Task Main(string[] args)
@@ -30,6 +31,8 @@ namespace SimpleBrokeredMessaging.Sender
             await SendSimpleOrderBatchPizza(client);
 
             await SendSimpleDuplicateOrderBatchPizza(client);
+
+            await SendSimpleSessionGroupOrderBatchPizza(client);
 
         }
 
@@ -187,6 +190,59 @@ namespace SimpleBrokeredMessaging.Sender
                     Subject = "PizzaOrder",
                     ContentType = "application/json",
                     MessageId = pizza.Id.ToString(),
+                };
+
+                if (!messageBatch.TryAddMessage(message))
+                {
+                    throw new Exception("The message is too large to fit in the batch");
+                }
+
+            }
+
+            Console.WriteLine($" Send batch order ....", ConsoleColor.Green);
+
+            // Send the message
+            await sender.SendMessagesAsync(messageBatch);
+
+            // Close the sender
+            await sender.CloseAsync();
+
+            Console.WriteLine("Finally batch order.");
+        }
+
+
+
+        private static async Task SendSimpleSessionGroupOrderBatchPizza(ServiceBusClient client)
+        {
+            Console.WriteLine($" SendSimpleDuplicateOrderBatchPyzza....", ConsoleColor.Cyan);
+
+            var pizzaOrderList = new List<PizzaOrder>()
+            {
+                new PizzaOrder("Renan Carvalho de Souza 1", "Hawaiian", "Large", 55),
+                new PizzaOrder("Renan Carvalho de Souza 2", "Hawaiian", "Large", 55),
+                new PizzaOrder("Renan Carvalho de Souza 3", "Hawaiian", "Large", 55),
+
+                 new PizzaOrder("Renan Carvalho de Souza 1", "Hawaiian", "Small", 56),
+                new PizzaOrder("Renan Carvalho de Souza 2", "Hawaiian", "Small", 56),
+                new PizzaOrder("Renan Carvalho de Souza 3", "Hawaiian", "Small", 56),
+            };
+
+            // Create a service bus sender  
+            var sender = client.CreateSender(QueueNameGrupoSession);
+
+            using ServiceBusMessageBatch messageBatch = await sender.CreateMessageBatchAsync();
+
+            foreach (var pizza in pizzaOrderList)
+            {
+                // Serialize the order object 
+                var jasonPizza = JsonConvert.SerializeObject(pizza);
+
+                // Create a Message
+                var message = new ServiceBusMessage(jasonPizza)
+                {
+                    Subject = "PizzaOrder",
+                    ContentType = "application/json",
+                    SessionId = pizza.Id.ToString(),
                 };
 
                 if (!messageBatch.TryAddMessage(message))

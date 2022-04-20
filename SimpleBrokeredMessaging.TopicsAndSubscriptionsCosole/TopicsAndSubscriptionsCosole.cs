@@ -5,7 +5,7 @@ namespace SimpleBrokeredMessaging.TopicsAndSubscriptionsCosole
 {
     internal class TopicsAndSubscriptionsCosole
     {
-        private static string _serviceBusConnectionString = "Endpoint=sb://rcstisimplesmessaging.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=iJ9/eum8WNm0ssx6yXqWAuDpZkH5kDYivy2oaA0PzS8=";
+        private static string _serviceBusConnectionString = "CONNECTION_AZURE_PORTAL";
         private static string _ordersTopicName = "Orders";
         static async Task Main(string[] args)
         {
