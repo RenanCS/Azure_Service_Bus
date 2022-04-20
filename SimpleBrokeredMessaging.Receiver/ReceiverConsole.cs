@@ -1,9 +1,7 @@
 ﻿using Azure.Messaging.ServiceBus;
-using Azure.Messaging.ServiceBus.Administration;
 using Newtonsoft.Json;
 using SimpleBrokeredMessaging.MessageEntities;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleBrokeredMessaging.Receiver
