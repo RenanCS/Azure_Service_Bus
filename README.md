@@ -17,7 +17,7 @@
 
 ## 💻 Sobre o projeto
 
-Os projetos consiste em utilizar Azure Service Bus, em backend, com envio, recebimento e gerenciamento do azure e mensagens com queue e topic:
+Os projetos consistem em utilizar Azure Service Bus, em backend, como: envio, recebimento e gerenciamento do azure e mensagens com queue e topic:
 - Portal: Azure Service Bus
 - Pacote: Azure.Messaging.ServiceBus
 
